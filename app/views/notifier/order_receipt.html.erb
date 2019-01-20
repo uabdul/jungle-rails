@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h1>Order No. <%= @order.id %></h1>
+	<h2>Thank you for your order!</h2>
+	<h3>Order Details</h3>
+	<ul>
+		<% LineItem.where(order_id: @order.id).each do |item| %>
+          <li><%= Product.find(item.product_id).name %>, quantity: <%= item.quantity.to_i %></li>
+        <% end %>
+	</ul>
+	<h3>Order Total: $<%= @order.total_cents %></h3>
+</body>
+</html>
