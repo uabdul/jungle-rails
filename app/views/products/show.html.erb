@@ -29,17 +29,22 @@
             <dt>Average Rating</dt>
             <dd><%= @ratings.average("rating") %></dd>
             <% @ratings.each do |item| %>
-              <dt>User</dt>
-              <% @reviewer = User.find(item.user_id) %>
-              <dd><%= @reviewer.first_name %></dd>
-              <dt>Rating</dt>
+              <dt>User:</dt>
+              <dd><%= item.user.first_name %></dd>
+              <dt>Rating:</dt>
               <dd><%= item.rating %></dd>
-              <dt>Description</dt>
+              <dt>Description:</dt>
               <dd><%= item.description %></dd>
             <% end %>
           </dl>
         <% else %>
           <p>There are currently no reviews for this product.</p>
+        <% end %>
+        <h3>Add a Review</h3>
+        <%= form_for ([@product, @product.ratings.build]) do |form| %>
+          <p>Rating: <%= form.select :rating, [1, 2, 3, 4, 5] %></p>
+          <p>Description: <%= form.text_area :description %></p>
+          <%= form.submit "Submit Review" %>
         <% end %>
       </div>
     </div>

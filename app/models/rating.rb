@@ -1,5 +1,6 @@
 class Rating < ActiveRecord::Base
 
+	has_one :user
 	
 	belongs_to :product
 	belongs_to :user

@@ -7,6 +7,9 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find params[:id]
     @ratings = Rating.where(["product_id = ?", @product.id])
+
+   puts "rating", @rating 
+   puts "product", @product 
   end
 
 end
