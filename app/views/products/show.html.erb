@@ -22,41 +22,53 @@
           <dd><%= @product.quantity %></dd>
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
-        </dl>
-        <h3>Reviews</h3>
-        <% if @ratings.length > 0 then %>
-          <dl class="dl-horizontal">
-            <dt>Average Rating</dt>
+          <dt>Average User Rating</dt>
+          <% if @ratings.length > 0 then %>
             <dd><%= @ratings.average("rating").round(2) %></dd>
-            <% @ratings.each do |item| %>
-              <br>
-              <dt>User:</dt>
-              <dd><%= item.user.first_name %></dd>
-              <dt>Rating:</dt>
-              <dd><%= item.rating %></dd>
-              <dt>Description:</dt>
-              <dd><%= item.description %></dd>
-              <% if current_user && current_user.id == item.user.id then %>
-                <dt>Modify:</dt><dd><%= button_to [@product, item], :method => :delete, class: 'btn btn-xs btn-danger' do %> Delete <% end %></dd>
-              <% end %>
-              <br>
-            <% end %>
-          </dl>
-        <% else %>
-          <p>There are currently no reviews for this product.</p>
-        <% end %>
-        <h3>Add a Review</h3>
-        <% if current_user then %>
-          <%= form_for ([@product, @product.ratings.build]) do |form| %>
-            <p>Rating: <%= form.select :rating, [1, 2, 3, 4, 5] %></p>
-            <p>Description: <%= form.text_area :description %></p>
-            <%= form.submit "Submit Review" %>
+          <else>
+            <dd>This product has not been rated.</dd>
           <% end %>
-        <% else %>
-          <p>Please <%= link_to "log in", '/login' %> to post a review.</p>
-        <% end %>
+        </dl>
       </div>
     </div>
+    <div class="container">
+      <h3>Add a Review</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>Add a Review</h3>
+          <% if current_user then %>
+            <%= form_for ([@product, @product.ratings.build]) do |form| %>
+              <p>Rating: <%= form.select :rating, [1, 2, 3, 4, 5] %></p>
+              <p>Description: <%= form.text_area :description %></p>
+              <%= form.submit "Submit Review" %>
+            <% end %>
+          <% else %>
+            <p>Please <%= link_to "log in", '/login' %> to post a review.</p>
+          <% end %>
+        </div>
+      </div>
+      <h3>Reviews</h3>
+      <% if @ratings.length > 0 then %>
+        <% @ratings.each do |item| %>
+        <div class="panel panel-default">
+          <div class="panel-heading">Review by <%= item.user.first_name %></div>
+          <div class="panel-body">
+            <p><strong>Rating: </strong> <%= item.rating %></p>
+            <p><strong>Description: </strong><%= item.description %></p>
+          </div>
+          <% if current_user && current_user.id == item.user.id then %>
+            <div class="panel-footer">
+              <%= button_to [@product, item], :method => :delete, class: 'btn btn-xs btn-danger' do %> Delete <% end %>
+            </div>
+          <% end %>
+        </div>
+        <% end %>
+      <% else %>
+        <div class="panel panel-default">
+          <div class="panel-body">There are currently no reviews for this product</div>
+        </div>
+      <% end %>
+    </div>      
   </article>
 
 </section>
