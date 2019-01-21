@@ -23,9 +23,26 @@
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
         </dl>
+        <h3>Reviews</h3>
+        <% if @ratings.length > 0 then %>
+          <dl class="dl-horizontal">
+            <dt>Average Rating</dt>
+            <dd><%= @ratings.average("rating") %></dd>
+            <% @ratings.each do |item| %>
+              <dt>User</dt>
+              <% @reviewer = User.find(item.user_id) %>
+              <dd><%= @reviewer.first_name %></dd>
+              <dt>Rating</dt>
+              <dd><%= item.rating %></dd>
+              <dt>Description</dt>
+              <dd><%= item.description %></dd>
+            <% end %>
+          </dl>
+        <% else %>
+          <p>There are currently no reviews for this product.</p>
+        <% end %>
       </div>
     </div>
-
   </article>
 
 </section>
